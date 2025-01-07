@@ -79,7 +79,7 @@ def create_overlay_pdf(text_positions, page_width, page_height):
         if inverted_y < 0:
             inverted_y = 0
 
-        can.drawString(x, inverted_y - 7, text)
+        can.drawString(x, inverted_y -7, text)
 
     can.save()
     packet.seek(0)
@@ -125,6 +125,7 @@ async def process_pdf(
     # json_positions: str = Form(...),
     json_file :UploadFile
 ):
+    
     try:
         print(csv_file , pdf_file , json_file)
         
