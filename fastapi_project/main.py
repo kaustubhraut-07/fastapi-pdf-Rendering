@@ -126,6 +126,7 @@ async def process_pdf(
     json_file :UploadFile
 ):
     try:
+        print(csv_file , pdf_file , json_file)
         
         csv_path = os.path.join(output_directory, csv_file.filename)
         pdf_path = os.path.join(output_directory, pdf_file.filename)
