@@ -79,7 +79,7 @@ def create_overlay_pdf(text_positions, page_width, page_height):
         if inverted_y < 0:
             inverted_y = 0
 
-        can.drawString(x, inverted_y -7, text)
+        can.drawString(x, inverted_y -15, text)
 
     can.save()
     packet.seek(0)
@@ -117,7 +117,7 @@ def add_text_to_pdf(input_pdf_stream, output_pdf_path, text_positions):
         writer.write(output_file)
 
 
-
+file_paths = []
 @app.post("/process-pdf/")
 async def process_pdf(
     csv_file: UploadFile,
@@ -172,8 +172,10 @@ async def process_pdf(
             output_pdf_path = os.path.join(output_directory, f"output_file_{idx + 1}.pdf")
             add_text_to_pdf(subset_pdf, output_pdf_path, filtered_tags)
             output_files.append(output_pdf_path)
-
-        return JSONResponse({"message": "PDFs processed successfully", "files": output_files})
+            print(os.getcwd())
+            file_paths.append(os.path.join(os.getcwd(), "output_files", f"output_file_{idx + 1}.pdf"))
+        # return JSONResponse({"message": "PDFs processed successfully", "files": output_files})
+        return JSONResponse({"message": "PDFs processed successfully", "files path":file_paths })
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
