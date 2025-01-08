@@ -10,7 +10,7 @@ import os
 import io
 from typing import List, Optional
 from reportlab.lib.colors import white
-
+import zipfile
 
 app = FastAPI()
 
@@ -175,7 +175,12 @@ async def process_pdf(
             print(os.getcwd())
             file_paths.append(os.path.join(os.getcwd(), "output_files", f"output_file_{idx + 1}.pdf"))
         # return JSONResponse({"message": "PDFs processed successfully", "files": output_files})
-        return JSONResponse({"message": "PDFs processed successfully", "files path":file_paths })
+            os.makedirs("Zip_output_dir", exist_ok=True)
+            with zipfile.ZipFile(os.path.join("Zip_output_dir", "output_files.zip"), "w") as zipf:
+                for file in output_files:
+                    zipf.write(file, os.path.basename(file))
+            zipfile_name = os.path.join(f"{os.getcwd()}/Zip_output_dir")
+        return JSONResponse({"message": "PDFs processed successfully", "files path":file_paths , "zip+folderpath" : zipfile_name})
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
